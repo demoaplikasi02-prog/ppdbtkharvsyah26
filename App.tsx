@@ -202,7 +202,7 @@ const App: React.FC = () => {
   };
 
   const handleWhatsAppConfirm = () => {
-    const message = `Assalamualaikum Admin TK Manhaj Brand School, saya konfirmasi pendaftaran PPDB Online.\n\nNama: ${formData.namaLengkap}\nID: ${formData.kodePendaftaran}\nKelompok: ${formData.kelompok}`;
+    const message = `Assalamualaikum Admin TK IT Harvysyah, saya konfirmasi pendaftaran PPDB Online.\n\nNama: ${formData.namaLengkap}\nID: ${formData.kodePendaftaran}\nKelompok: ${formData.kelompok}`;
     window.open(`https://wa.me/6281370014330?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -327,7 +327,7 @@ const App: React.FC = () => {
           </div>
           
           <div className="text-center space-y-1 w-full max-w-2xl">
-            <p className="text-white text-[12px] md:text-[13px] font-black tracking-[0.5em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">TK MANHAJ BRAND SCHOOL</p>
+            <p className="text-white text-[12px] md:text-[13px] font-black tracking-[0.5em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">TK IT HARVYSYAH</p>
             {/* ADDRESS LINE - FORCED TO SINGLE LINE ON DESKTOP, RESPONSIVE ON MOBILE */}
             <p className="text-white text-[8px] md:text-[10px] font-bold tracking-[0.1em] uppercase opacity-90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] mx-auto mb-2 whitespace-nowrap overflow-hidden text-ellipsis px-4">{SCHOOL_ADDRESS}</p>
             

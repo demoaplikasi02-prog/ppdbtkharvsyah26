@@ -9,10 +9,10 @@ import React from 'react';
 export const API_URL = "https://script.google.com/macros/s/AKfycbw3hWiiEdYkLRVIRW2UQWyfcGvvgtSc_AyiEZCABOPSu8qhuBLrKDxMHUhCd3y8b9pHrA/exec";
 
 // 2. Logo Sekolah (TK Al Hikmah)
-export const SCHOOL_LOGO = "https://iili.io/fhLGgpI.png";
+export const SCHOOL_LOGO = "https://iili.io/fVuQp2t.png";
 
 // 3. Alamat Sekolah
-export const SCHOOL_ADDRESS = "Jln. Mesjid I Dsn 1. Desa Sekip. Kec Lubuk Pakam";
+export const SCHOOL_ADDRESS = "Jl. Sadar Timur Gang Rahmad No. 042, Kec. Lubuk Pakam,";
 
 // 4. Kota Sekolah
 export const SCHOOL_CITY = "Lubuk Pakam";
