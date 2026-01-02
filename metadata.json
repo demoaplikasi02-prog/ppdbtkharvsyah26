@@ -1,0 +1,7 @@
+{
+  "name": "PPDB TK Al Hikmah",
+  "description": "A comprehensive online registration portal for TK Al Hikmah for the 2026/2027 academic year, integrated with Google Sheets and Drive.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
