@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Input, Select } from './components/Input';
+import { Input, Select } from './components/Input.tsx';
 import { FormData, FormStep } from './types';
 import { 
   API_URL, 
@@ -203,7 +203,7 @@ const App: React.FC = () => {
 
   const handleWhatsAppConfirm = () => {
     const message = `Assalamualaikum Admin TK IT Harvysyah, saya konfirmasi pendaftaran PPDB Online.\n\nNama: ${formData.namaLengkap}\nID: ${formData.kodePendaftaran}\nKelompok: ${formData.kelompok}`;
-    window.open(`https://wa.me/6281370014330?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://wa.me/6281262006253?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   if (currentStep === FormStep.SELESAI) {
