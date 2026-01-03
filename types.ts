@@ -70,3 +70,17 @@ export enum FormStep {
   WALI = 3,
   SELESAI = 4
 }
+
+export enum AppMode {
+  HOME = 'home',
+  REGISTER = 'register',
+  LOGIN = 'login',
+  ADMIN = 'admin',
+  PARTICIPANT = 'participant'
+}
+
+export interface LoginData {
+  loginType: 'participant' | 'admin';
+  kodePendaftaran: string;
+  password: string;
+}
