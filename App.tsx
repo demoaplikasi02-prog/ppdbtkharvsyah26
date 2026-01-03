@@ -17,10 +17,19 @@ import {
 } from './constants';
 
 const PAYMENT_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQLeao5dEa-FooJ2cwSoffM_SdvSF17zJzl_XOu3-bVPG5d7ks5PCLU6DrgJrF78sLV-XPwTgLU5NOa/pub?gid=831993778&single=true&output=csv";
+const REGISTRATION_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQLeao5dEa-FooJ2cwSoffM_SdvSF17zJzl_XOu3-bVPG5d7ks5PCLU6DrgJrF78sLV-XPwTgLU5NOa/pub?gid=0&single=true&output=csv";
 
 interface PaymentItem {
   komponen: string;
   biaya: string;
+}
+
+interface RegistrationItem {
+  timestamp: string;
+  namaLengkap: string;
+  kodePendaftaran: string;
+  kelompok: string;
+  status: string;
 }
 
 const App: React.FC = () => {
@@ -30,6 +39,7 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [yearsState, setYearsState] = useState<number>(0);
   const [paymentInfo, setPaymentInfo] = useState<PaymentItem[]>([]);
+  const [registrationData, setRegistrationData] = useState<RegistrationItem[]>([]);
   const [appMode, setAppMode] = useState<AppMode>(AppMode.HOME);
   const [loginData, setLoginData] = useState<LoginData>({ loginType: 'participant', kodePendaftaran: '', password: '' });
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -96,6 +106,12 @@ const App: React.FC = () => {
     fetchPaymentData();
   }, []);
 
+  useEffect(() => {
+    if (appMode === AppMode.ADMIN) {
+      fetchRegistrationData();
+    }
+  }, [appMode]);
+
   const fetchPaymentData = async () => {
     try {
       const response = await fetch(PAYMENT_CSV_URL);
@@ -111,6 +127,27 @@ const App: React.FC = () => {
       setPaymentInfo(data);
     } catch (err) {
       console.error("Gagal mengambil data pembayaran:", err);
+    }
+  };
+
+  const fetchRegistrationData = async () => {
+    try {
+      const response = await fetch(REGISTRATION_CSV_URL);
+      const csvText = await response.text();
+      const rows = csvText.split('\n').filter(row => row.trim() !== '');
+      const data = rows.slice(1).map(row => {
+        const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        return {
+          timestamp: columns[0]?.replace(/"/g, '').trim() || '',
+          namaLengkap: columns[1]?.replace(/"/g, '').trim() || '',
+          kodePendaftaran: columns[2]?.replace(/"/g, '').trim() || '',
+          kelompok: columns[3]?.replace(/"/g, '').trim() || '',
+          status: columns[4]?.replace(/"/g, '').trim() || 'Pending'
+        };
+      }).filter(item => item.namaLengkap !== '');
+      setRegistrationData(data);
+    } catch (err) {
+      console.error("Gagal mengambil data pendaftaran:", err);
     }
   };
 
@@ -308,7 +345,7 @@ const App: React.FC = () => {
                   />
                   
                   <div className="h-16 flex items-end justify-center w-full pb-1 relative z-10">
-                    <p className="text-[11px] font-black text-slate-900 underline">Ratna Dewi</p>
+                    <p className="text-[11px] font-black text-slate-900 underline">YUSRI ELVIDA DAULAY</p>
                   </div>
                   <p className="text-[11px] font-black uppercase text-slate-900 border-t border-slate-900 pt-1 w-full text-center relative z-10">Kepala TK Al Hikmah</p>
                 </div>
@@ -801,6 +838,17 @@ const App: React.FC = () => {
       </div>
     );
   } else if (appMode === AppMode.ADMIN) {
+    const totalPendaftar = registrationData.length;
+    const pembayaranSelesai = registrationData.filter(item => item.status === 'Lunas').length;
+    const menungguKonfirmasi = totalPendaftar - pembayaranSelesai;
+
+    const kelompokStats = registrationData.reduce((acc, item) => {
+      acc[item.kelompok] = (acc[item.kelompok] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    const recentRegistrations = registrationData.slice(-5).reverse();
+
     return (
       <div className="min-h-screen bg-slate-50 py-10 px-4">
         <div className="max-w-6xl mx-auto space-y-8">
@@ -817,7 +865,7 @@ const App: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-blue-100 text-sm font-bold uppercase tracking-widest">Total Pendaftar</p>
-                    <p className="text-3xl font-black">1,234</p>
+                    <p className="text-3xl font-black">{totalPendaftar.toLocaleString()}</p>
                   </div>
                   <Icons.User className="w-12 h-12 opacity-80" />
                 </div>
@@ -827,7 +875,7 @@ const App: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-green-100 text-sm font-bold uppercase tracking-widest">Pembayaran Selesai</p>
-                    <p className="text-3xl font-black">987</p>
+                    <p className="text-3xl font-black">{pembayaranSelesai.toLocaleString()}</p>
                   </div>
                   <Icons.Star className="w-12 h-12 opacity-80" />
                 </div>
@@ -837,7 +885,7 @@ const App: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-orange-100 text-sm font-bold uppercase tracking-widest">Menunggu Konfirmasi</p>
-                    <p className="text-3xl font-black">247</p>
+                    <p className="text-3xl font-black">{menungguKonfirmasi.toLocaleString()}</p>
                   </div>
                   <Icons.Info className="w-12 h-12 opacity-80" />
                 </div>
@@ -848,22 +896,21 @@ const App: React.FC = () => {
               <div className="bg-white border border-slate-100 rounded-3xl p-6">
                 <h3 className="text-xl font-black text-slate-900 mb-4">Kelompok Pendaftar</h3>
                 <div className="space-y-3">
-                  {[
-                    { name: 'KB (3 Tahun)', count: 145, color: 'bg-blue-500' },
-                    { name: 'TK A (4 Tahun)', count: 234, color: 'bg-green-500' },
-                    { name: 'TK B (5 Tahun)', count: 312, color: 'bg-orange-500' },
-                    { name: 'Belum Cukup Umur', count: 67, color: 'bg-red-500' }
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center justify-between">
-                      <span className="text-slate-700 font-bold">{item.name}</span>
-                      <div className="flex items-center gap-3">
-                        <div className="w-24 bg-slate-200 rounded-full h-2">
-                          <div className={`h-2 rounded-full ${item.color}`} style={{ width: `${(item.count / 500) * 100}%` }}></div>
+                  {Object.entries(kelompokStats).map(([kelompok, count], i) => {
+                    const colors = ['bg-blue-500', 'bg-green-500', 'bg-orange-500', 'bg-red-500', 'bg-purple-500'];
+                    const maxCount = Math.max(...(Object.values(kelompokStats) as number[]));
+                    return (
+                      <div key={i} className="flex items-center justify-between">
+                        <span className="text-slate-700 font-bold">{kelompok || 'Belum Ditentukan'}</span>
+                        <div className="flex items-center gap-3">
+                          <div className="w-24 bg-slate-200 rounded-full h-2">
+                            <div className={`h-2 rounded-full ${colors[i % colors.length]}`} style={{ width: `${(count / maxCount) * 100}%` }}></div>
+                          </div>
+                          <span className="text-slate-900 font-black w-12 text-right">{count}</span>
                         </div>
-                        <span className="text-slate-900 font-black w-12 text-right">{item.count}</span>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
@@ -900,16 +947,10 @@ const App: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="text-sm">
-                    {[
-                      { id: 'PPDB-ABC123', name: 'Ahmad Rahman', kelompok: 'TK A', status: 'Lunas', date: '2026-01-15' },
-                      { id: 'PPDB-DEF456', name: 'Siti Aminah', kelompok: 'TK B', status: 'Pending', date: '2026-01-14' },
-                      { id: 'PPDB-GHI789', name: 'Budi Santoso', kelompok: 'KB', status: 'Lunas', date: '2026-01-13' },
-                      { id: 'PPDB-JKL012', name: 'Maya Sari', kelompok: 'TK A', status: 'Pending', date: '2026-01-12' },
-                      { id: 'PPDB-MNO345', name: 'Rizki Pratama', kelompok: 'TK B', status: 'Lunas', date: '2026-01-11' }
-                    ].map((item, i) => (
+                    {recentRegistrations.length > 0 ? recentRegistrations.map((item, i) => (
                       <tr key={i} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                        <td className="py-3 text-slate-900 font-bold">{item.id}</td>
-                        <td className="py-3 text-slate-900 font-bold">{item.name}</td>
+                        <td className="py-3 text-slate-900 font-bold">{item.kodePendaftaran}</td>
+                        <td className="py-3 text-slate-900 font-bold">{item.namaLengkap}</td>
                         <td className="py-3 text-slate-700">{item.kelompok}</td>
                         <td className="py-3">
                           <span className={`px-3 py-1 rounded-full text-xs font-bold ${
@@ -918,9 +959,13 @@ const App: React.FC = () => {
                             {item.status}
                           </span>
                         </td>
-                        <td className="py-3 text-slate-500">{item.date}</td>
+                        <td className="py-3 text-slate-500">{new Date(item.timestamp).toLocaleDateString('id-ID')}</td>
                       </tr>
-                    ))}
+                    )) : (
+                      <tr>
+                        <td colSpan={5} className="py-6 text-center text-slate-400 font-bold">Belum ada data pendaftaran</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
