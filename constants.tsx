@@ -8,11 +8,11 @@ import React from 'react';
 // 1. URL Apps Script Terbaru Anda
 export const API_URL = "https://script.google.com/macros/s/AKfycbwuEl9hORGddFKt4Kviz8N_4E_7S6et-oq1dlAMZhuPXH26DehqEe4KN7nGSmnbaLlb/exec";
 
-// 2. Logo Sekolah (TK Al Hikmah)
+// 2. Logo Sekolah (TK IT Harvysyah)
 export const SCHOOL_LOGO = "https://iili.io/fVuQp2t.png";
 
 // 3. Alamat Sekolah
-export const SCHOOL_ADDRESS = "Jl. Sadar Timur Gang Rahmad No. 042, Kec. Lubuk Pakam,";
+export const SCHOOL_ADDRESS = "Jl. Sadar Timur Gang Rahmad No. 042, Desa Sekip, Kec. Lubuk Pakam,";
 
 // 4. Kota Sekolah
 export const SCHOOL_CITY = "Lubuk Pakam";

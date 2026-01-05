@@ -138,11 +138,11 @@ const App: React.FC = () => {
       const data = rows.slice(1).map(row => {
         const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
         return {
-          timestamp: columns[0]?.replace(/"/g, '').trim() || '',
-          namaLengkap: columns[1]?.replace(/"/g, '').trim() || '',
-          kodePendaftaran: columns[2]?.replace(/"/g, '').trim() || '',
-          kelompok: columns[3]?.replace(/"/g, '').trim() || '',
-          status: columns[4]?.replace(/"/g, '').trim() || 'Pending'
+          namaLengkap: columns[0]?.replace(/"/g, '').trim() || '',
+          kodePendaftaran: columns[1]?.replace(/"/g, '').trim() || '',
+          kelompok: columns[2]?.replace(/"/g, '').trim() || '',
+          status: columns[3]?.replace(/"/g, '').trim() || 'Pending',
+          timestamp: columns[4]?.replace(/"/g, '').trim() || ''
         };
       }).filter(item => item.namaLengkap !== '');
       setRegistrationData(data);
@@ -179,16 +179,16 @@ const App: React.FC = () => {
   useEffect(() => {
     if (formData.tanggalLahir) {
       const birthDate = new Date(formData.tanggalLahir);
-      const targetDate = new Date('2026-06-01');
-      
+      const targetDate = new Date('2026-07-01');
+
       let years = targetDate.getFullYear() - birthDate.getFullYear();
       let months = targetDate.getMonth() - birthDate.getMonth();
-      
-      if (months < 0) { 
-        years--; 
-        months += 12; 
+
+      if (months < 0) {
+        years--;
+        months += 12;
       }
-      
+
       setYearsState(years);
       const usiaStr = `${years} Thn ${months} Bln`;
       updateField('usia', usiaStr);
@@ -263,7 +263,7 @@ const App: React.FC = () => {
   };
 
   const handleWhatsAppConfirm = () => {
-    const message = `Assalamualaikum Admin TK IT Harvysyah, saya konfirmasi pendaftaran PPDB Online.\n\nNama: ${formData.namaLengkap}\nID: ${formData.kodePendaftaran}\nKelompok: ${formData.kelompok}`;
+    const message = `Assalamualaikum Admin TK IT Harvysyah, saya konfirmasi pendaftaran PPDB Online.\n\nNama: ${formData.namaLengkap}\nID: ${formData.kodePendaftaran}\nKelompok: ${formData.kelompok}\n\nMohon kirimkan screenshot bukti pembayaran.`;
     window.open(`https://wa.me/6281262006253?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -315,7 +315,7 @@ const App: React.FC = () => {
                         { label: 'Nama Lengkap', value: formData.namaLengkap },
                         { label: 'NIK', value: formData.nik },
                         { label: 'Tempat, Tgl Lahir', value: `${formData.tempatLahir}, ${formData.tanggalLahir}` },
-                        { label: 'Usia (Per Juni 2026)', value: formData.usia },
+                        { label: 'Usia (Per Juli 2026)', value: formData.usia },
                         { label: 'Ukuran Seragam', value: formData.ukuranSeragam },
                       ].map((item, i) => (
                         <div key={i} className="flex justify-between border-b border-slate-50 pb-1">
@@ -339,15 +339,15 @@ const App: React.FC = () => {
                 
                 <div className="relative w-40">
                   <img
-                    src="https://down-id.img.susercontent.com/file/sg-11134201-7rd3t-lwgurx61vx1y34"
+                    src="https://iili.io/fwi9xDb.jpg"
                     alt="Stempel"
                     className="absolute -top-10 -left-6 w-28 h-28 object-contain opacity-80 mix-blend-multiply pointer-events-none z-0"
                   />
                   
                   <div className="h-16 flex items-end justify-center w-full pb-1 relative z-10">
-                    <p className="text-[11px] font-black text-slate-900 underline">YUSRI ELVIDA DAULAY</p>
+                    <p className="text-[11px] font-black text-slate-900 underline">Yusri Elvida Daulay, S.Pd,Gr</p>
                   </div>
-                  <p className="text-[11px] font-black uppercase text-slate-900 border-t border-slate-900 pt-1 w-full text-center relative z-10">Kepala TK Al Hikmah</p>
+                  <p className="text-[11px] font-black uppercase text-slate-900 border-t border-slate-900 pt-1 w-full text-center relative z-10">Kepala TK IT Harvysyah</p>
                 </div>
               </div>
             </div>
@@ -434,17 +434,17 @@ const App: React.FC = () => {
 
                 <div className="bg-white rounded-[40px] p-8 shadow-xl border border-slate-100 space-y-6">
                   <h3 className="text-[12px] font-black text-slate-900 uppercase tracking-widest mb-2 flex items-center gap-2"><div className="w-2 h-2 bg-indigo-600 rounded-full" /> Identitas Dasar</h3>
-                  <Input label="Nama Lengkap" placeholder="Sesuai Akta Kelahiran" value={formData.namaLengkap} onChange={e => updateField('namaLengkap', e.target.value)} />
+                  <Input label="Nama Lengkap" placeholder="Sesuai Akta Kelahiran" value={formData.namaLengkap} onChange={e => updateField('namaLengkap', e.target.value)} required />
                   <div className="grid grid-cols-2 gap-4">
-                    <Input label="Nama Panggilan" value={formData.namaPanggilan} onChange={e => updateField('namaPanggilan', e.target.value)} />
-                    <Select label="Jenis Kelamin" value={formData.jenisKelamin} onChange={e => updateField('jenisKelamin', e.target.value)} options={[{label:'Laki-laki',value:'Laki-laki'},{label:'Perempuan',value:'Perempuan'}]} />
+                    <Input label="Nama Panggilan" value={formData.namaPanggilan} onChange={e => updateField('namaPanggilan', e.target.value)} required />
+                    <Select label="Jenis Kelamin" value={formData.jenisKelamin} onChange={e => updateField('jenisKelamin', e.target.value)} options={[{label:'Laki-laki',value:'Laki-laki'},{label:'Perempuan',value:'Perempuan'}]} required />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <Input label="Tempat Lahir" value={formData.tempatLahir} onChange={e => updateField('tempatLahir', e.target.value)} />
-                    <Input label="Tgl Lahir" type="date" value={formData.tanggalLahir} onChange={e => updateField('tanggalLahir', e.target.value)} />
+                    <Input label="Tempat Lahir" value={formData.tempatLahir} onChange={e => updateField('tempatLahir', e.target.value)} required />
+                    <Input label="Tgl Lahir" type="date" value={formData.tanggalLahir} onChange={e => updateField('tanggalLahir', e.target.value)} required />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <Input label="Usia (Per Juni 2026)" value={formData.usia} readOnly className="bg-white font-bold" />
+                    <Input label="Usia (Per Juli 2026)" value={formData.usia} readOnly className="bg-white font-bold" />
                     <Input label="Kelompok" value={formData.kelompok} readOnly className="bg-white font-black text-indigo-600" />
                   </div>
                   
@@ -456,7 +456,7 @@ const App: React.FC = () => {
                   </div>
 
                   <div className="space-y-4">
-                    <Input label="NIK (16 Digit)" value={formData.nik} onChange={e => updateField('nik', e.target.value.replace(/\D/g, ''))} maxLength={16} />
+                    <Input label="NIK (16 Digit)" value={formData.nik} onChange={e => updateField('nik', e.target.value.replace(/\D/g, ''))} maxLength={16} required />
                     <p className="text-[10px] text-rose-600 mt-[-10px] ml-1 font-black italic">
                       Jumlah angka diinput: {formData.nik.length} / 16
                     </p>
@@ -471,13 +471,13 @@ const App: React.FC = () => {
                 <div className="bg-white rounded-[40px] p-8 shadow-xl border border-slate-100 space-y-6">
                   <h3 className="text-[12px] font-black text-slate-900 uppercase tracking-widest mb-2 flex items-center gap-2"><div className="w-2 h-2 bg-indigo-600 rounded-full" /> Data Fisik & Kondisi</h3>
                   <div className="grid grid-cols-3 gap-4">
-                    <Input label="Anak Ke" type="number" value={formData.anakKe} onChange={e => updateField('anakKe', e.target.value)} />
-                    <Input label="Jml Saudara" type="number" value={formData.jumlahSaudara} onChange={e => updateField('jumlahSaudara', e.target.value)} />
-                    <Input label="Berat (Kg)" type="number" value={formData.beratBadan} onChange={e => updateField('beratBadan', e.target.value)} suffix="Kg" />
+                    <Input label="Anak Ke" type="number" value={formData.anakKe} onChange={e => updateField('anakKe', e.target.value)} required />
+                    <Input label="Jml Saudara" type="number" value={formData.jumlahSaudara} onChange={e => updateField('jumlahSaudara', e.target.value)} required />
+                    <Input label="Berat (Kg)" type="number" value={formData.beratBadan} onChange={e => updateField('beratBadan', e.target.value)} suffix="Kg" required />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <Input label="Tinggi (Cm)" type="number" value={formData.tinggiBadan} onChange={e => updateField('tinggiBadan', e.target.value)} suffix="Cm" />
-                    <Input label="Lingkar Kepala" type="number" value={formData.lingkarKepala} onChange={e => updateField('lingkarKepala', e.target.value)} suffix="Cm" />
+                    <Input label="Tinggi (Cm)" type="number" value={formData.tinggiBadan} onChange={e => updateField('tinggiBadan', e.target.value)} suffix="Cm" required />
+                    <Input label="Lingkar Kepala" type="number" value={formData.lingkarKepala} onChange={e => updateField('lingkarKepala', e.target.value)} suffix="Cm" required />
                   </div>
 
                   <div className="pt-4 border-t border-slate-50 space-y-4">
@@ -489,7 +489,8 @@ const App: React.FC = () => {
                         value={formData.isABK}
                         onChange={e => updateField('isABK', e.target.value)}
                         options={[{label:'Tidak',value:'Tidak'},{label:'Ya',value:'Ya'}]}
-                      />
+                        required
+                       />
                       
                       {formData.isABK === 'Ya' && (
                         <div className="animate-in fade-in slide-in-from-top-2 duration-300">
@@ -498,7 +499,8 @@ const App: React.FC = () => {
                             value={formData.jenisABK === '-' ? '' : formData.jenisABK}
                             onChange={e => updateField('jenisABK', e.target.value)}
                             placeholder="Contoh: Autisme, ADHD, Tunawicara, dll"
-                          />
+                            required
+                           />
                         </div>
                       )}
                     </div>
@@ -509,7 +511,8 @@ const App: React.FC = () => {
                         value={formData.isPernahSekolahLain}
                         onChange={e => updateField('isPernahSekolahLain', e.target.value)}
                         options={[{label:'Tidak',value:'Tidak'},{label:'Ya',value:'Ya'}]}
-                      />
+                        required
+                       />
                       
                       {formData.isPernahSekolahLain === 'Ya' && (
                         <div className="animate-in fade-in slide-in-from-top-2 duration-300">
@@ -518,7 +521,8 @@ const App: React.FC = () => {
                             value={formData.namaSekolahAsal === '-' ? '' : formData.namaSekolahAsal}
                             onChange={e => updateField('namaSekolahAsal', e.target.value)}
                             placeholder="Masukkan nama sekolah sebelumnya"
-                          />
+                            required
+                           />
                         </div>
                       )}
                     </div>
@@ -533,37 +537,37 @@ const App: React.FC = () => {
               <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-right-4">
                 <div className="bg-white rounded-[40px] p-8 shadow-xl border border-slate-100 space-y-6">
                   <h3 className="text-[12px] font-black text-slate-900 uppercase tracking-widest flex items-center gap-2"><div className="w-2 h-2 bg-blue-500 rounded-full" /> Data Ayah</h3>
-                  <Input label="Nama Lengkap Ayah" value={formData.namaAyah} onChange={e => updateField('namaAyah', e.target.value)} />
+                  <Input label="Nama Lengkap Ayah" value={formData.namaAyah} onChange={e => updateField('namaAyah', e.target.value)} required />
                   <div className="grid grid-cols-2 gap-4">
-                    <Select label="Status Ayah" value={formData.statusAyah} onChange={e => updateField('statusAyah', e.target.value)} options={[{label:'Hidup',value:'Hidup'},{label:'Meninggal',value:'Meninggal'}]} />
+                    <Select label="Status Ayah" value={formData.statusAyah} onChange={e => updateField('statusAyah', e.target.value)} options={[{label:'Hidup',value:'Hidup'},{label:'Meninggal',value:'Meninggal'}]} required />
                     <Input label="WhatsApp Ayah" value={formData.waAyah} onChange={e => updateField('waAyah', e.target.value)} placeholder="08..." />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <Input label="Tempat Lahir" value={formData.tempatLahirAyah} onChange={e => updateField('tempatLahirAyah', e.target.value)} />
-                    <Input label="Tgl Lahir" type="date" value={formData.tanggalLahirAyah} onChange={e => updateField('tanggalLahirAyah', e.target.value)} />
+                    <Input label="Tempat Lahir" value={formData.tempatLahirAyah} onChange={e => updateField('tempatLahirAyah', e.target.value)} required />
+                    <Input label="Tgl Lahir" type="date" value={formData.tanggalLahirAyah} onChange={e => updateField('tanggalLahirAyah', e.target.value)} required />
                   </div>
-                  <Select label="Pekerjaan" value={formData.pekerjaanAyah} onChange={e => updateField('pekerjaanAyah', e.target.value)} options={PEKERJAAN_AYAH_OPTIONS} />
+                  <Select label="Pekerjaan" value={formData.pekerjaanAyah} onChange={e => updateField('pekerjaanAyah', e.target.value)} options={PEKERJAAN_AYAH_OPTIONS} required />
                   <div className="grid grid-cols-2 gap-4">
-                    <Select label="Pendidikan" value={formData.pendidikanAyah} onChange={e => updateField('pendidikanAyah', e.target.value)} options={PENDIDIKAN_OPTIONS} />
-                    <Select label="Penghasilan" value={formData.penghasilanAyah} onChange={e => updateField('penghasilanAyah', e.target.value)} options={PENGHASILAN_OPTIONS} />
+                    <Select label="Pendidikan" value={formData.pendidikanAyah} onChange={e => updateField('pendidikanAyah', e.target.value)} options={PENDIDIKAN_OPTIONS} required />
+                    <Select label="Penghasilan" value={formData.penghasilanAyah} onChange={e => updateField('penghasilanAyah', e.target.value)} options={PENGHASILAN_OPTIONS} required />
                   </div>
                 </div>
 
                 <div className="bg-white rounded-[40px] p-8 shadow-xl border border-slate-100 space-y-6">
                   <h3 className="text-[12px] font-black text-slate-900 uppercase tracking-widest flex items-center gap-2"><div className="w-2 h-2 bg-rose-500 rounded-full" /> Data Ibu</h3>
-                  <Input label="Nama Lengkap Ibu" value={formData.namaIbu} onChange={e => updateField('namaIbu', e.target.value)} />
+                  <Input label="Nama Lengkap Ibu" value={formData.namaIbu} onChange={e => updateField('namaIbu', e.target.value)} required />
                   <div className="grid grid-cols-2 gap-4">
-                    <Select label="Status Ibu" value={formData.statusIbu} onChange={e => updateField('statusIbu', e.target.value)} options={[{label:'Hidup',value:'Hidup'},{label:'Meninggal',value:'Meninggal'}]} />
+                    <Select label="Status Ibu" value={formData.statusIbu} onChange={e => updateField('statusIbu', e.target.value)} options={[{label:'Hidup',value:'Hidup'},{label:'Meninggal',value:'Meninggal'}]} required />
                     <Input label="WhatsApp Ibu" value={formData.waIbu} onChange={e => updateField('waIbu', e.target.value)} placeholder="08..." />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <Input label="Tempat Lahir" value={formData.tempatLahirIbu} onChange={e => updateField('tempatLahirIbu', e.target.value)} />
-                    <Input label="Tgl Lahir" type="date" value={formData.tanggalLahirIbu} onChange={e => updateField('tanggalLahirIbu', e.target.value)} />
+                    <Input label="Tempat Lahir" value={formData.tempatLahirIbu} onChange={e => updateField('tempatLahirIbu', e.target.value)} required />
+                    <Input label="Tgl Lahir" type="date" value={formData.tanggalLahirIbu} onChange={e => updateField('tanggalLahirIbu', e.target.value)} required />
                   </div>
-                  <Select label="Pekerjaan" value={formData.pekerjaanIbu} onChange={e => updateField('pekerjaanIbu', e.target.value)} options={PEKERJAAN_IBU_OPTIONS} />
+                  <Select label="Pekerjaan" value={formData.pekerjaanIbu} onChange={e => updateField('pekerjaanIbu', e.target.value)} options={PEKERJAAN_IBU_OPTIONS} required />
                   <div className="grid grid-cols-2 gap-4">
-                    <Select label="Pendidikan" value={formData.pendidikanIbu} onChange={e => updateField('pendidikanIbu', e.target.value)} options={PENDIDIKAN_OPTIONS} />
-                    <Select label="Penghasilan" value={formData.penghasilanIbu} onChange={e => updateField('penghasilanIbu', e.target.value)} options={PENGHASILAN_OPTIONS} />
+                    <Select label="Pendidikan" value={formData.pendidikanIbu} onChange={e => updateField('pendidikanIbu', e.target.value)} options={PENDIDIKAN_OPTIONS} required />
+                    <Select label="Penghasilan" value={formData.penghasilanIbu} onChange={e => updateField('penghasilanIbu', e.target.value)} options={PENGHASILAN_OPTIONS} required />
                   </div>
 
                   <div className="pt-6 border-t border-slate-50 space-y-6">
@@ -578,7 +582,8 @@ const App: React.FC = () => {
                         {label: 'Ibu', value: 'Ibu'},
                         {label: 'Wali', value: 'Wali'}
                       ]}
-                    />
+                      required
+                     />
 
                     {/* DATA WALI (CONDITIONAL) */}
                     {formData.pilihanWali === 'Wali' && (
@@ -586,19 +591,19 @@ const App: React.FC = () => {
                         <h3 className="text-[12px] font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
                           <div className="w-2 h-2 bg-amber-500 rounded-full" /> Data Wali
                         </h3>
-                        <Input label="Nama Lengkap Wali" value={formData.namaWali} onChange={e => updateField('namaWali', e.target.value)} />
+                        <Input label="Nama Lengkap Wali" value={formData.namaWali} onChange={e => updateField('namaWali', e.target.value)} required />
                         <div className="grid grid-cols-2 gap-4">
-                          <Input label="Hubungan Keluarga" placeholder="Contoh: Kakek, Paman, dll" value={formData.hubunganWali} onChange={e => updateField('hubunganWali', e.target.value)} />
+                          <Input label="Hubungan Keluarga" placeholder="Contoh: Kakek, Paman, dll" value={formData.hubunganWali} onChange={e => updateField('hubunganWali', e.target.value)} required />
                           <Input label="WhatsApp Wali" value={formData.waWali} onChange={e => updateField('waWali', e.target.value)} placeholder="08..." />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
-                          <Input label="Tempat Lahir Wali" value={formData.tempatLahirWali} onChange={e => updateField('tempatLahirWali', e.target.value)} />
-                          <Input label="Tgl Lahir Wali" type="date" value={formData.tanggalLahirWali} onChange={e => updateField('tanggalLahirWali', e.target.value)} />
+                          <Input label="Tempat Lahir Wali" value={formData.tempatLahirWali} onChange={e => updateField('tempatLahirWali', e.target.value)} required />
+                          <Input label="Tgl Lahir Wali" type="date" value={formData.tanggalLahirWali} onChange={e => updateField('tanggalLahirWali', e.target.value)} required />
                         </div>
-                        <Select label="Pendidikan Terakhir" value={formData.pendidikanWali} onChange={e => updateField('pendidikanWali', e.target.value)} options={PENDIDIKAN_OPTIONS} />
+                        <Select label="Pendidikan Terakhir" value={formData.pendidikanWali} onChange={e => updateField('pendidikanWali', e.target.value)} options={PENDIDIKAN_OPTIONS} required />
                         <div className="grid grid-cols-2 gap-4">
-                          <Select label="Pekerjaan" value={formData.pekerjaanWali} onChange={e => updateField('pekerjaanWali', e.target.value)} options={PEKERJAAN_AYAH_OPTIONS} />
-                          <Select label="Penghasilan" value={formData.penghasilanWali} onChange={e => updateField('penghasilanWali', e.target.value)} options={PENGHASILAN_OPTIONS} />
+                          <Select label="Pekerjaan" value={formData.pekerjaanWali} onChange={e => updateField('pekerjaanWali', e.target.value)} options={PEKERJAAN_AYAH_OPTIONS} required />
+                          <Select label="Penghasilan" value={formData.penghasilanWali} onChange={e => updateField('penghasilanWali', e.target.value)} options={PENGHASILAN_OPTIONS} required />
                         </div>
                       </div>
                     )}
@@ -616,10 +621,10 @@ const App: React.FC = () => {
               <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-right-4">
                 <div className="bg-white rounded-[40px] p-8 shadow-xl border border-slate-100 space-y-6">
                   <h3 className="text-[12px] font-black text-slate-900 uppercase tracking-widest flex items-center gap-2"><div className="w-2 h-2 bg-indigo-600 rounded-full" /> Kontak & Domisili</h3>
-                  <Input label="WhatsApp Utama (Untuk Notifikasi)" placeholder="08xxx" value={formData.noWhatsapp} onChange={e => updateField('noWhatsapp', e.target.value)} />
+                  <Input label="WhatsApp Utama (Untuk Notifikasi)" placeholder="08xxx" value={formData.noWhatsapp} onChange={e => updateField('noWhatsapp', e.target.value)} required />
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Alamat Lengkap Domisili Siswa</label>
-                    <textarea className="w-full bg-white border border-slate-100 rounded-2xl p-4 text-sm focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none" rows={3} value={formData.alamatRumahSiswa} onChange={e => updateField('alamatRumahSiswa', e.target.value)} />
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Alamat Lengkap Domisili Siswa <span className="text-rose-500">*</span></label>
+                    <textarea className="w-full bg-white border border-slate-100 rounded-2xl p-4 text-sm focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none" rows={3} value={formData.alamatRumahSiswa} onChange={e => updateField('alamatRumahSiswa', e.target.value)} required />
                   </div>
 
                   <div className="pt-4 border-t border-slate-50">
@@ -649,8 +654,8 @@ const App: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <Select label="Ukuran Seragam" value={formData.ukuranSeragam} onChange={e => updateField('ukuranSeragam', e.target.value)} options={SERAGAM_OPTIONS} />
-                      <Select label="Metode Bayar" value={formData.metodePembayaran} onChange={e => updateField('metodePembayaran', e.target.value)} options={METODE_BAYAR_OPTIONS} />
+                      <Select label="Ukuran Seragam" value={formData.ukuranSeragam} onChange={e => updateField('ukuranSeragam', e.target.value)} options={SERAGAM_OPTIONS} required />
+                      <Select label="Metode Bayar" value={formData.metodePembayaran} onChange={e => updateField('metodePembayaran', e.target.value)} options={METODE_BAYAR_OPTIONS} required />
                     </div>
 
                     {formData.metodePembayaran && (
@@ -664,8 +669,8 @@ const App: React.FC = () => {
                             <p className="text-[12px] font-black text-indigo-900 mb-2">{formData.metodePembayaran}</p>
                             <p className="text-[11px] font-bold text-indigo-700/80 leading-relaxed uppercase tracking-wider">
                               {formData.metodePembayaran === 'Transfer Bank'
-                                ? "Silakan lakukan transfer ke Bank Syariah Indonesia (BSI) No. Rekening: 7111002221 a.n TK Al Hikmah. Mohon simpan bukti transfer untuk dikirimkan melalui WhatsApp Konfirmasi."
-                                : "Pembayaran dapat dilakukan secara tunai di kantor administrasi sekolah setiap hari kerja (Senin-Jumat) pukul 08.00 - 14.00 WIB."
+                                ? "Silakan lakukan transfer ke Bank Mandiri No. Rekening: 1050017026109 a.n Yusri Elvida Daulay. Mohon simpan bukti transfer untuk dikirimkan melalui WhatsApp Konfirmasi."
+                                : "Pembayaran dapat dilakukan secara tunai di kantor TK Harvysyah setiap hari kerja (Senin-Sabtu) pukul 08.00 - 17.00 WIB."
                               }
                             </p>
                           </div>
@@ -677,7 +682,7 @@ const App: React.FC = () => {
 
                 <div className={`p-6 rounded-[32px] border transition-all flex items-center gap-5 cursor-pointer ${isAgreed ? 'bg-indigo-50 border-indigo-200' : 'bg-slate-50 border-slate-100'}`} onClick={() => setIsAgreed(!isAgreed)}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all ${isAgreed ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white border-slate-200 text-transparent'}`}>✓</div>
-                  <p className="text-[11px] font-bold text-slate-600 leading-tight">Saya menyatakan data di atas benar & siap mengikuti prosedur pendaftaran di TK Al Hikmah.</p>
+                  <p className="text-[11px] font-bold text-slate-600 leading-tight">Saya menyatakan data di atas benar & siap mengikuti prosedur pendaftaran di TK IT Harvysyah.</p>
                 </div>
 
                 {error && <div className="bg-rose-50 text-rose-600 p-5 rounded-3xl text-[11px] font-bold border border-rose-100">{error}</div>}
@@ -750,9 +755,6 @@ const App: React.FC = () => {
               <div className="space-y-4">
                 <button onClick={() => setAppMode(AppMode.REGISTER)} className="w-full py-6 rounded-3xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all bg-indigo-600 text-white shadow-xl hover:bg-indigo-700">
                   Pendaftaran Siswa
-                </button>
-                <button onClick={() => setAppMode(AppMode.LOGIN)} className="w-full py-6 rounded-3xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all bg-slate-900 text-white shadow-xl hover:bg-slate-800">
-                  Login
                 </button>
               </div>
             </div>
@@ -843,7 +845,8 @@ const App: React.FC = () => {
     const menungguKonfirmasi = totalPendaftar - pembayaranSelesai;
 
     const kelompokStats = registrationData.reduce((acc, item) => {
-      acc[item.kelompok] = (acc[item.kelompok] || 0) + 1;
+      const key = item.kelompok || 'Belum Ditentukan';
+      acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
 
@@ -897,14 +900,16 @@ const App: React.FC = () => {
                 <h3 className="text-xl font-black text-slate-900 mb-4">Kelompok Pendaftar</h3>
                 <div className="space-y-3">
                   {Object.entries(kelompokStats).map(([kelompok, count], i) => {
+                    const countNum = count as number;
                     const colors = ['bg-blue-500', 'bg-green-500', 'bg-orange-500', 'bg-red-500', 'bg-purple-500'];
-                    const maxCount = Math.max(...(Object.values(kelompokStats) as number[]));
+                    const maxCount = Object.keys(kelompokStats).length > 0 ? Math.max(...(Object.values(kelompokStats) as number[])) : 0;
+                    const width = maxCount > 0 ? (countNum / maxCount) * 100 : 0;
                     return (
                       <div key={i} className="flex items-center justify-between">
-                        <span className="text-slate-700 font-bold">{kelompok || 'Belum Ditentukan'}</span>
+                        <span className="text-slate-700 font-bold">{kelompok}</span>
                         <div className="flex items-center gap-3">
                           <div className="w-24 bg-slate-200 rounded-full h-2">
-                            <div className={`h-2 rounded-full ${colors[i % colors.length]}`} style={{ width: `${(count / maxCount) * 100}%` }}></div>
+                            <div className={`h-2 rounded-full ${colors[i % colors.length]}`} style={{ width: `${width}%` }}></div>
                           </div>
                           <span className="text-slate-900 font-black w-12 text-right">{count}</span>
                         </div>
